@@ -22,30 +22,19 @@ def is_safe(arr):
     return True
 
 
-out = 0
+part1 = 0
+part2 = 0
 for line in lines:
     if is_safe(line):
-        out += 1
-
-print('Part 1:', out)
-
-out = 0
-for i in range(len(lines)):
-    line = lines[i]
-    if is_safe(line):
-        out += 1
+        part1 += 1
+        part2 += 1
         continue
     for j in range(len(line)):
         copy = line.copy()
         copy.pop(j)
         if is_safe(copy):
-            out += 1
+            part2 += 1
             break
 
-
-print('Part 2:', out)
-
-
-
-
-
+print('Part 1:', part1)
+print('Part 2:', part2)
