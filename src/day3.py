@@ -20,7 +20,7 @@ for match in matches:
         if enabled:
             part2 += num1 * num2
 
-print('Part1', part1)
-print('Part2', part2)
+print('Part 1:', part1)
+print('Part 2:', part2)
 
 
