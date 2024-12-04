@@ -9,55 +9,39 @@ input_arr = file.splitlines()
 lines = []
 for line in input_arr:
     lines.append([c for c in line])
-
 lines = np.asarray(lines)
-diagonals = [''.join(lines.diagonal()), ''.join(np.flipud(lines).diagonal())]
-for i in range(1, lines.shape[0]):
-    diagonals.append(''.join(lines.diagonal(offset=i)))
-    diagonals.append(''.join(lines.diagonal(offset=-i)))
-    diagonals.append(''.join(np.fliplr(lines).diagonal(offset=i)))
-    diagonals.append(''.join(np.flipud(lines).diagonal(offset=i)))
 
-total = 0
-rows = []
-columns = []
+diagonals = [lines[::-1, :].diagonal(i) for i in range(-lines.shape[0]+1, lines.shape[1])]
+diagonals.extend(lines.diagonal(i) for i in range(lines.shape[1]-1, -lines.shape[0], -1))
+diagonals = [n.tolist() for n in diagonals]
+diagonals = [''.join(x) for x in diagonals]
+
+part1 = 0
 for i in range(lines.shape[0]):
-    rows.append(''.join(lines[i, :]))
-    columns.append(''.join(lines[:, i]))
+    row = ''.join(lines[i, :])
+    column = ''.join(lines[:, i])
 
-for i in range(len(rows)):
-    matches = re.findall(r"XMAS", rows[i])
-    total += len(matches)
+    part1 += len(re.findall(r"XMAS", row))
+    part1 += len(re.findall(r"XMAS", column))
+    part1 += len(re.findall(r"XMAS", row[::-1]))
+    part1 += len(re.findall(r"XMAS", column[::-1]))
 
-    matches = re.findall(r"XMAS", columns[i])
-    total += len(matches)
+for diagonal in diagonals:
+    part1 += len(re.findall(r"XMAS", diagonal))
+    part1 += len(re.findall(r"XMAS", diagonal[::-1]))
 
-    matches = re.findall(r"XMAS", rows[i][::-1])
-    total += len(matches)
+print('Part 1:', part1)
 
-    matches = re.findall(r"XMAS", columns[i][::-1])
-    total += len(matches)
-
-for x in diagonals:
-    matches = re.findall(r"XMAS", x)
-    total += len(matches)
-
-    matches = re.findall(r"XMAS", x[::-1])
-    total += len(matches)
-
-print(total)
-
-total = 0
-y, x = lines.shape
-for i in range(y-2):
-    for j in range(x-2):
+part2 = 0
+for i in range(lines.shape[0]-2):
+    for j in range(lines.shape[1]-2):
         window = lines[i:i+3, j:j+3]
         d1 = ''.join(window.diagonal())
         d2 = ''.join(np.fliplr(window).diagonal())
         if (d1 == 'MAS' or d1 == 'SAM') and (d2 == 'MAS' or d2 == 'SAM'):
-            total += 1
+            part2 += 1
 
-print(total)
+print('Part 2:', part2)
 
 
 
