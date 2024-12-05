@@ -4,7 +4,6 @@ with open('../data/day5.txt', 'r') as f:
 input_arr = file.splitlines()
 
 rules = {}
-rules_reversed = {}
 pages = []
 for line in input_arr:
     if '|' in line:
@@ -14,11 +13,6 @@ for line in input_arr:
             rules[s1].append(s2)
         else:
             rules[s1] = [s2]
-
-        if s2 in rules_reversed.keys():
-            rules_reversed[s2].append(s1)
-        else:
-            rules_reversed[s2] = [s1]
     elif line == '':
         continue
     else:
