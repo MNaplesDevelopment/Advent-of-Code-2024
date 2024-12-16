@@ -13,8 +13,10 @@ for i, line in enumerate(input_arr):
         else:
             antenna_locs[char] = [(i, j)]
 
+
 def valid_index(loc):
     return 0 <= loc[0] < x and 0 <= loc[1] < y
+
 
 antinodes = []
 antinodes2 = []

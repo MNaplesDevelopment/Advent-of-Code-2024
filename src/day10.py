@@ -14,10 +14,12 @@ def path_finder(path):
     if part1_bool:
         if path in visited:
             return 0
+        visited.append(path)
+
     x, y = path
-    visited.append(path)
     if maze[x][y] == 9:
         return 1
+
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
     # Remove invalid directions
     if x == 0:
