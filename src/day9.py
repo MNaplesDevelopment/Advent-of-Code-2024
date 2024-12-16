@@ -1,6 +1,4 @@
-from tqdm import tqdm
-
-with open('../data/day9test.txt', 'r') as f:
+with open('../data/day9.txt', 'r') as f:
     file = f.read()
 
 dot = False
@@ -15,13 +13,13 @@ for i in range(len(file)):
         for _ in range(num):
             disk.append('.')
     else:
-        disk2.append(str(page_id) * num)
+        disk2.append([str(page_id) for _ in range(num)])
         for _ in range(num):
             disk.append(str(page_id))
         page_id += 1
     dot = not dot
 
-for i in tqdm(range(len(disk))):
+for i in range(len(disk)):
     if disk[i].isnumeric(): continue
     swapped = False
     for j in range(len(disk)-1, i, -1):
@@ -38,31 +36,32 @@ for i, c in enumerate(disk):
     else:
         break
 
-print(part1)
+print('Part 1:', part1)
 
 for i in range(len(disk2)-1, 0, -1):
-    if not disk[i].isnumeric(): continue
-    for j in range(1, len(disk2)):
-        if '.' in disk2[j] and len(disk2[j]) >= len(disk[i]):
-            disk2.insert(j+1, '.' * (len(disk[i]) - len(disk2[j])))
+    if type(disk2[i]) is str: continue
+    for j in range(1, i):
+        if '.' in disk2[j] and len(disk2[j]) >= len(disk2[i]):
+            diff = len(disk2[j]) - len(disk2[i])
             disk2[j] = disk2[i]
-            del disk2[i]
+            if diff != 0:
+                disk2.insert(j+1, '.' * diff)
+                disk2[i+1] = '.' * len(disk2[i+1])
+            else:
+                disk2[i] = '.' * len(disk2[i])
             break
 
-print(disk2)
+part2 = 0
+page_rank = 0
+for chunk in disk2:
+    if type(chunk) is str:
+        page_rank += len(chunk)
+        continue
+    for char in chunk:
+        part2 += page_rank * int(char)
+        page_rank += 1
+
+print('Part 2:', part2)
 
 
-# final_str = ''
-# t = []
-# print(page_ids)
-# for i in range(len(page_ids)-1, 0, -1):
-#     page = page_ids[i]
-#     for j, dot in enumerate(dots):
-#         if len(dot) >= len(page):
-#             dots[j] = '.' * (len(dot) - len(page))
-#             t.append(page)
-#             page_ids.insert(j+1, page_ids.pop(i))
-#             break
-#
-# print(t)
 
